@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreContactRequest;
 use App\Models\Contact;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 
 class ContactController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -37,17 +37,10 @@ class ContactController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreContactRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'email' => 'required | email',
-            'phone_number' => 'required | digits:9',
-            'age' => 'required | numeric | min:1 | max:255',
-        ]);
 
-
-        auth()->user()->contacts()->create($data);
+        auth()->user()->contacts()->create($request->validated());
 
         return redirect()->route('home');
     }
@@ -60,6 +53,8 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
+        $this->authorize('view', $contact);
+
         return view('contacts.show', compact('contact'));
     }
 
@@ -71,6 +66,8 @@ class ContactController extends Controller
      */
     public function edit(Contact $contact)
     {
+        $this->authorize('update', $contact);
+
         return view('contacts.edit', compact('contact'));
     }
 
@@ -81,16 +78,11 @@ class ContactController extends Controller
      * @param  \App\Models\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Contact $contact)
+    public function update(StoreContactRequest $request, Contact $contact)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'email' => 'required | email',
-            'phone_number' => 'required | digits:9',
-            'age' => 'required | numeric | min:1 | max:255',
-        ]);
+        $this->authorize('update', $contact);
 
-        $contact->update($data);
+        $contact->update($request->validated());
 
         return redirect()->route('home');
     }
@@ -103,6 +95,8 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
+        $this->authorize('delete', $contact);
+
         $contact->delete();
 
         return redirect()->route('home');
