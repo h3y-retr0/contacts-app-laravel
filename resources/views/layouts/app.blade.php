@@ -107,7 +107,7 @@
           );
         @endphp
         <x-alert type="info"
-          message="Trial ends in {{ $freeTrialRemainingDays }} days"></x-alert>
+          message="Trial ends in {{ $freeTrialRemainingDays }} days. Upgrade <a href='{{ route('checkout') }}'>here</a>"></x-alert>
       @endif
 
       @yield('content')
