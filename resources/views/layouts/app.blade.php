@@ -100,6 +100,16 @@
         <x-alert :type="$alert['type']" :message="$alert['message']" />
       @endif
 
+      @if (!auth()->user()?->subscribed() && auth()->user()?->onTrial())
+        @php
+          $freeTrialRemainingDays = now()->diffInDays(
+              auth()->user()->trial_ends_at,
+          );
+        @endphp
+        <x-alert type="info"
+          message="Trial ends in {{ $freeTrialRemainingDays }} days"></x-alert>
+      @endif
+
       @yield('content')
     </main>
   </div>
