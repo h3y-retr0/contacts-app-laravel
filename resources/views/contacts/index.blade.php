@@ -35,7 +35,6 @@
             <button type="submit" href=""
               class="btn btn-danger p-1 px-2"><x-icon icon="trash" /></button>
           </form>
-
         </div>
       </div>
     @empty
