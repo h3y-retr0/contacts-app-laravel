@@ -22,10 +22,7 @@ class DatabaseSeeder extends Seeder
         );
 
         $testUser->contacts->first()->sharedWithUsers()->attach($users->pluck('id'));
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }
+
+
